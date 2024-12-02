@@ -1,0 +1,138 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+
+.back-button {
+  position: absolute;
+  top: 40px;
+  left: 30px;
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: #fff;
+  z-index: 99999;
+  cursor: pointer;
+  box-shadow: 5px 10px 20px 0px #d3d1d8ab;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.back-button:hover {
+  transform: scale(1.04);
+  box-shadow: 0 5px 8px #3a3a3a6a;
+}
+
+/* form section */
+.form-container .registration-title {
+  font-size: 36.41px;
+  font-weight: 600;
+  line-height: 43.7px;
+}
+
+.form-container p {
+  color: #9796a1;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19.28px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 10px;
+  padding-left: 10px;
+  width: 324.01px;
+  height: 65px;
+  margin: 30px 0;
+}
+
+.otp-inputs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.otp-inputs input {
+  width: 60px;
+  height: 60px;
+  border: 1px solid #ff8c00;
+  box-shadow: 15px 20px 45px 0px #e9e9e940;
+  border-radius: 10px;
+  text-align: center;
+  transition: border-color 0.3s;
+
+  font-size: 27.2px;
+  font-weight: 500;
+  line-height: 34.41px;
+  color: #f58d1d;
+}
+
+.otp-inputs input:focus {
+  outline: none;
+  box-shadow: 5px 10px 20px 0px #d3d1d8ab;
+  border-color: #f5451d;
+}
+
+.resend-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resend-text {
+  font-size: 14px;
+  color: #888;
+}
+
+.resend-link {
+  color: #ff8c00;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.resend-link:hover {
+  text-decoration: underline;
+}
+
+/* Media query for larger screens */
+@media (min-width: 769px) {
+  .container {
+    max-width: 450px;
+    margin: 0 auto;
+  }
+
+  .form-container {
+    border: 5px solid #ffc529;
+    font-size: 28px;
+    padding: auto;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .form-container h1 {
+    font-size: 20px;
+  }
+
+  .form-container p {
+    font-size: 13px;
+  }
+
+  
+}

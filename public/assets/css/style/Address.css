@@ -1,0 +1,374 @@
+.t-header {
+    box-shadow: 0px 5px 5px rgb(239, 239, 239);
+    padding: 15px 0;
+    position: fixed;
+    background-color: #fff;
+    z-index: 9999;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+  }
+  
+  .t-header .back_img {
+    height: 16px;
+    width: 16px;
+    margin-right: 5px;
+    margin-bottom: 2px;
+  }
+  
+  .billing-container {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    margin-top: 50px;
+  }
+  
+  .product-tracker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .product-tracker .track-line {
+    position: absolute;
+    width: 270px;
+    height: 5px;
+    background-color: #e0e0e0;
+    top: 10px;
+    left: 35px;
+  }
+  
+  .product-tracker .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 24px;
+    position: relative;
+    margin-bottom: 40px;
+  }
+  
+  .product-tracker .middle-step {
+    margin-right: 110px;
+    margin-left: 110px;
+  }
+  
+  .product-tracker .first-step {
+    background-color: #ff6200;
+  }
+  
+  .product-tracker .step p {
+    margin-top: 5px;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 18px;
+    color: #333;
+  }
+  
+  .product-tracker .end-step p {
+    color: #e0e0e0;
+  }
+  
+  .product-tracker .first-step p {
+    color: #000;
+  }
+  
+  .product-tracker .middle-step p {
+    color: #000;
+  }
+  
+  .product-tracker .step.active {
+    background-color: #ff6200;
+  }
+  
+  .billing-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .billing-form label {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20.24px;
+    color: #9796a1;
+    margin-bottom: 5px;
+  }
+  
+  .billing-form input,
+  .billing-form select {
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    color: #444;
+    box-shadow: 15px 20px 45px 0px #e9e9e940;
+  }
+  
+  .payment-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .amount {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .payment-section button {
+    background-color: #ff7b00;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .payment-section button:hover {
+    background-color: #e66a00;
+  }
+  
+  .desktop-only {
+    display: none;
+  }
+  
+  .add-to-cart-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .add-to-cart-btn .total-price {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 36px;
+    letter-spacing: 0.10000000149011612px;
+  }
+  
+  .checkout {
+    background-color: #ff9f0d;
+    width: 190px;
+    border-radius: 10px;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 27px;
+  }
+  
+  .checkout:hover {
+    background-color: #e64a19;
+  }
+  
+  /* ++++Responsive++++ */
+  /* mobile screen */
+  @media (max-width: 425px) {
+  
+    .billing-container {
+      height: 100vh;
+    margin-bottom: 50px;
+    }
+    
+    .add-to-cart-btn {
+      position: fixed;
+      padding: 13px 18px 13px;
+      background-color: #fff;
+      width: 100%;
+      bottom: 0px;
+      left: 0px;
+      z-index: 2;
+    box-shadow: 0 0 10px 5px rgba(154, 154, 154, 0.159);
+    }
+  }
+  
+  /* tab screen */
+  @media (min-width: 426px) and (max-width: 1023px) {
+    .billing-container {
+      width: 100%;
+      max-width: 600px;
+    }
+    .product-tracker .track-line {
+      left: 150px;
+  }
+  .add-to-cart-btn {
+    margin-top: 100px;
+  }
+  }
+  
+  /* Larger screen */
+  @media screen and (min-width: 1024px) {
+    .desktop-only {
+      display: block;
+    }
+    .mobile-screen-cart {
+      display: none;
+    }
+  
+    .billing-container {
+      max-width: 900px;
+      padding: 20px;
+      margin: 0 auto;
+      margin-top: 20px;
+    }
+  
+    .main-content-area {
+      display: flex;
+      align-items: start;
+      justify-content: center;
+      gap: 30px;
+    }
+    .billing-form {
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0px 0px 20px 10px #f2f2f28c;
+    }
+  
+    .billing-form input,
+    .billing-form select {
+      width: 500px;
+    }
+  
+    .billing-form input,
+    .billing-form select {
+      padding: 10px;
+      font-size: 14px;
+    }
+    .price-content-area {
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      border-radius: 20px;
+      box-shadow: 0px 0px 20px 10px #f2f2f28c;
+      position: sticky;
+      margin-bottom: 18px;
+      width: 400px;
+    }
+  
+    .product-tracker {
+      margin-bottom: 40px;
+    }
+  
+    .product-tracker .track-line {
+      width: 500px;
+      top: 15px;
+      left: 190px;
+    }
+  
+    .product-tracker .step {
+      width: 36px;
+      height: 36px;
+      font-size: 16px;
+      line-height: 36px;
+    }
+  
+    .product-tracker .step p {
+      font-size: 15px;
+      font-weight: 700;
+      font-weight: 700;
+    }
+  
+    .product-tracker .middle-step {
+      margin-right: 220px;
+      margin-left: 220px;
+    }
+  
+    .summary div {
+      margin-bottom: 15px;
+    }
+  
+    .summary {
+      margin-bottom: 20px;
+    }
+  
+    .summary div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgb(234, 234, 234);
+    }
+  
+    .summary .price-title {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 18.91px;
+      margin-bottom: 10px;
+    }
+  
+    .add-to-cart-btn {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  
+    .add-to-cart-btn .total-price {
+      font-size: 22px;
+    }
+  
+    .checkout {
+      width: 110px;
+      padding: 10px 15px;
+      font-size: 16px;
+    }
+  }
+  
+  @media (min-width: 1030px) {
+    .billing-container {
+      max-width: 1350px;
+    }
+  
+    .main-content-area {
+      gap: 70px;
+    }
+  
+    .product-tracker .track-line {
+      left: 400px;
+    }
+  
+    .billing-form input,
+    .billing-form select {
+      width: 700px;
+    }
+  
+    .billing-form input,
+    .billing-form select {
+      padding: 15px;
+      font-size: 15px;
+    }
+  
+    .add-to-cart-btn .total-price {
+      font-size: 28px;
+    }
+  
+    .checkout {
+      width: 160px;
+      font-size: 20px;
+    }
+  }
+  
+  /* Custom CSS Subhankar */
+  @media (max-width: 430px) {
+    body {
+      min-height: 108vh !important;
+    }
+
+    .container{
+        margin-bottom: 150px !important;
+    } 
+  }

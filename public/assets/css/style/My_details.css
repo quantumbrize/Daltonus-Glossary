@@ -1,0 +1,179 @@
+.t-header {
+  box-shadow: 0px 5px 5px rgb(239, 239, 239);
+  padding: 15px 0;
+  position: fixed;
+  background-color: #fff;
+  z-index: 9999;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+}
+
+.t-header .back_img {
+  height: 16px;
+  width: 16px;
+  margin-right: 5px;
+  margin-bottom: 2px;
+}
+
+/* Profile */
+.container {
+  background-color: #ffffff;
+  /* padding: 20px; */
+  /* border-radius: 10px; */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  width: 95%;
+  max-width: 400px;
+  text-align: center;
+  padding-top: 50px;
+}
+
+.profile-pic img {
+  width: 75px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #fff;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20.24px;
+  color: #9796a1;
+}
+
+.input-group .pf-dts-input {
+  width: 100%;
+  padding: 20px !important;
+  border: 1px solid #dcdcdc;
+  border-radius: 15px !important;
+  font-size: 16px;
+}
+
+#locationButton {
+  width: 50%;
+  background-color: #ffa451;
+  padding: 8px;
+  color: #fff;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 18px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  border: none;
+  box-shadow: 0px 4px 15.2px 0px #ff9f0d52;
+  cursor: pointer;
+}
+
+#locationButton:hover {
+  background-color: #e2832a;
+}
+
+#confirmButton {
+  width: 50%;
+  border: none;
+  cursor: pointer;
+  margin-top: -10px;
+  width: Hug (190px) px;
+  height: Hug (47px) px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #ff9f0d;
+  box-shadow: 0px 4px 15.2px 0px #ff9f0d52;
+
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;
+  color: #fff;
+}
+
+#confirmButton:hover {
+  background-color: #ff6200;
+}
+
+/* +++++++++Responsiveness++++++++ */
+/* Mobile screen */
+@media screen and (max-width: 425px) {
+  .confirm-btn-bottom-fix {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    /* position: fixed; */
+    background-color: #fff;
+    z-index: 9999;
+    bottom: 25px;
+    left: 0px;
+  }
+}
+
+/* tab screen */
+@media (min-width: 426px) and (max-width: 1023px) {
+  .container {
+    width: 70%;
+    max-width: 800px;
+    text-align: center;
+    padding-top: 50px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding-top: 5px;
+  }
+  #locationButton {
+    margin: 60px 0;
+    width: 30%;
+  }
+}
+
+/* Larger screen */
+@media screen and (min-width: 1024px) {
+  .container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    max-width: 550px;
+    text-align: center;
+    padding-top: 50px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding-top: 5px;
+  }
+
+  #locationButton {
+    width: 30%;
+    font-size: 13px;
+  }
+  #confirmButton {
+    margin-top: 50px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .container {
+    width: 80%;
+  }
+}
+
+/* Custom CSS Subhankar */
+@media (max-width: 430px) {
+  /* body {
+    min-height: 108vh !important;
+  } */
+
+  .container{
+      margin-bottom: 80px !important;
+  } 
+}

@@ -1,0 +1,206 @@
+
+/*========================Variable CSS start==========================*/
+/* font family */
+/* color variables */
+:root {
+  --theme-color: 255, 141, 47;
+  --light-theme-color: 255, 240, 227;
+  --white: 255, 255, 255;
+  --black: 0, 0, 0;
+  --dark-text: 65, 68, 73;
+  --light-text: 141, 143, 145;
+  --success-color: 39, 125, 42;
+  --error-color: 245, 58, 58;
+  --accent-color: 58, 109, 229;
+  --rate-color: 255, 185, 49;
+  --box-bg: 245, 245, 245;
+  --dashed-line: 237, 237, 237;
+}
+
+.dark {
+  --white: 40, 40, 40;
+  --black: 255, 255, 255;
+  --dark-text: 255, 255, 255;
+  --light-text: 141, 143, 145;
+  --box-bg: 60, 60, 60;
+  --dashed-line: 82, 82, 82;
+}
+
+.grocery-color {
+  --theme-color: 59, 193, 142;
+}
+
+.pharmacy-color {
+  --theme-color: 0, 136, 147;
+}
+
+/* base scss files */
+/*=====================
+    Reset CSS start
+==========================*/
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+input[type="number"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.custom-container {
+  padding: 0 20px;
+  background-color: rgba(var(--white), 1);
+}
+
+section,
+.section-t-space {
+  padding-top: 20px;
+}
+
+.section-b-space {
+  padding-bottom: 20px;
+}
+
+.section-lg-t-space {
+  padding-top: 50px;
+}
+
+.section-lg-b-space {
+  padding-bottom: 50px;
+}
+
+.panel-space {
+  padding-top: 80px;
+}
+
+.theme-color {
+  color: rgba(var(--theme-color), 1) !important;
+}
+
+.dark-text {
+  color: rgba(var(--dark-text), 1) !important;
+}
+
+.light-text {
+  color: rgba(var(--light-text), 1) !important;
+}
+
+.error-color {
+  color: rgba(var(--error-color), 1) !important;
+}
+
+.success-color {
+  color: rgba(var(--success-color), 1) !important;
+}
+
+.rate-color {
+  color: rgba(var(--rate-color), 1) !important;
+}
+
+.box-bg {
+  background-color: rgba(var(--box-bg), 1) !important;
+}
+
+.accent-color {
+  color: rgba(var(--accent-color), 1) !important;
+}
+
+[dir="rtl"] .swiper {
+  direction: ltr;
+}
+
+/*=====================
+    Typography CSS start
+==========================*/
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Metropolis", sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0 auto;
+  overflow-y: auto;
+}
+body::-webkit-scrollbar {
+  scrollbar-width: none;
+  scrollbar-color: #000000;
+  width: 1px;
+}
+body::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: #000000;
+  border-radius: 0px;
+  border: 3px solid #ffffff;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 0;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+h3 {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+h4 {
+  font-size: 15px;
+  margin-bottom: 0;
+}
+
+h5 {
+  font-size: 14px;
+  line-height: 1;
+  margin-bottom: 0;
+}
+
+h6 {
+  font-size: calc(12px + 1 * (100vw - 320px) / 1600);
+  margin-bottom: 0;
+}
+
+p {
+  font-size: 13px;
+  margin-bottom: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  padding: 0;
+  margin-bottom: 0;
+}
+
+li {
+  list-style: none;
+  display: inline-block;
+  font-size: 14px;
+}
+
+/* components scss files*/
+
+

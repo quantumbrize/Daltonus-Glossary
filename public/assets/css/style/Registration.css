@@ -1,0 +1,167 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+
+/* form section */
+.form-container .registration-title {
+  font-size: 36.41px;
+  font-weight: 600;
+  line-height: 43.7px;
+}
+
+.form-container p {
+  color: #9796a1;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19.28px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding-left: 10px;
+  width: 324.01px;
+  height: 65px;
+  border: 1px solid #32343e;
+  margin: 30px 0;
+}
+
+/* Dropdown for country flag */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.input-container span {
+  color: #9796a1;
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+
+.selected-flag img {
+  width: 49px;
+  height: 30px;
+  border-radius: 4px;
+  box-shadow: 0px 10px 30px 0px #c0153933;
+  cursor: pointer;
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.dropdown-content .dropdown-item {
+  color: black;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dropdown-content .dropdown-item img {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.int-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+input[type="text"] {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 21.51px;
+  margin-left: 10px;
+}
+
+.btn-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#confirm-button {
+  width: 200px;
+  padding: 8px 13px;
+  background-color: #f58d1d;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 4px 4px 0px #00000040;
+  cursor: pointer;
+  margin: 0 auto;
+  border: 1px solid #f58d1d;
+
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;
+}
+
+#confirm-button:hover {
+  background-color: #fff;
+  color: #f58d1d;
+  border: 1px solid #f58d1d;
+}
+
+/* Media query for larger screens */
+@media (min-width: 769px) {
+  .container {
+    max-width: 450px;
+    margin: 0 auto;
+  }
+
+  .form-container {
+    border: 5px solid #ffc529;
+    font-size: 28px;
+    padding: auto;
+    padding: 20px;
+    border-radius: 20px;
+  }
+  .input-container span {
+    font-size: 12px;
+  }
+
+  
+.dropdown-content .dropdown-item {
+  font-size: 12px;
+}
+
+  .form-container h1 {
+    font-size: 28px;
+  }
+
+  #confirm-button {
+    font-size: 20px;
+    padding: 18px;
+  }
+}

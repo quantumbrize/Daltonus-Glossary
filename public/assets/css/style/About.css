@@ -1,0 +1,136 @@
+.cat-t-header {
+  box-shadow: 0px 5px 5px rgb(239, 239, 239);
+  padding: 8px 0;
+  position: fixed;
+  background-color: #fff;
+  z-index: 9999;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+}
+
+.cat-t-header .back_img {
+  height: 16px;
+  width: 16px;
+  margin-right: 5px;
+  margin-bottom: 2px;
+}
+
+/* About */
+.about-section {
+  margin: 0 auto;
+  padding: 20px;
+  margin-top: 50px;
+  height: 100vh;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  background-color: #e6e6e6;
+  border-radius: 8px;
+  padding: 10px;
+  border-radius: 10% 50% 10% 50% / 50% 10% 50% 10%;
+}
+.cont-inner {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+}
+
+.content img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50% 10% 50% 10% / 10% 50% 10% 50%;
+}
+
+.text {
+  padding: 10px 0;
+}
+
+.content h2 {
+  font-size: 24px;
+  margin: 0 0 10px;
+}
+
+.text {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.text p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cont-1 .text {
+  margin-left: 30px;
+}
+
+.about-section .description {
+  width: 100%;
+  height: auto;
+  padding: auto;
+  padding: 15px;
+  border: 2px solid gray;
+  border-radius: 10px;
+  margin-top: 50px;
+}
+
+.desktop-title {
+  /* display: none; */
+  text-align: center;
+}
+
+/* Tablet Screens (768px - 1024px) */
+@media screen and (min-width: 768px) {
+  .about-section {
+    padding: 40px;
+    margin-top: -0px;
+    width: 750px;
+  }
+  .cont-inner {
+    display: flex;
+    align-items: start;
+  }
+
+  .content {
+    margin-bottom: 30px;
+    padding: 20px;
+  }
+
+  .content img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .cont-1 .text {
+    margin-left: 40px;
+  }
+
+  .text p {
+    font-size: 18px;
+  }
+
+  .about-section .description {
+    margin-top: 60px;
+    padding: 20px;
+    font-size: 18px;
+  }
+  .desktop-title {
+    display: block;
+    text-align: center;
+    font-size: 35px;
+    margin-bottom: 20px;
+  }
+}
+
+/* Desktop Screens (1025px and above) */
+@media screen and (min-width: 1025px) {
+  .about-section {
+    width: 1000px;
+    margin-bottom: 70px;
+  }
+}
