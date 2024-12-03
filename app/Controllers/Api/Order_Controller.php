@@ -345,6 +345,7 @@ class Order_Controller extends Main_Controller
                         "product_config_id" => $cart['variation_id'],
                         "price" => $priceAfterDiscount,
                         "qty" => $cart['qty'],
+                        "size" => $cart['size'],
                     ];
     
                     if (!$OrderItemsModel->insert($OrderItemsData)) {

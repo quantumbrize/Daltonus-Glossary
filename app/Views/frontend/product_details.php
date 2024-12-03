@@ -1,4 +1,11 @@
 <style>
+    .smaller-text {
+        font-size: 15px;
+    }
+    .bold-black {
+    font-weight: bold;
+    color: black;
+}
     .varient_img{
         height: 60px !important;
         width: 60px !important;

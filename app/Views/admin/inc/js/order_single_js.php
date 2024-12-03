@@ -117,6 +117,7 @@
                     $('#order_id').html(order.order_id)
                     let html = ``
                     let total_discount = 0
+                    let delivery_charge = 0
                     
                     $.each(order.products, function (index, item) {
                          let img_link = item.product_config_id ? '/public/uploads/variant_images/' : '/public/uploads/product_images/'
@@ -124,6 +125,13 @@
                         if(item.product_details.product_img != ""){
                             product_image = `<?=base_url()?>${img_link + item.product_details.product_img[0].src}`
                         }
+                        let qty = item.qty; // Quantity of the product
+                        let base_discount = parseInt(item.product_details.base_discount); // Discount percentage
+                        let tax = parseInt(item.product_details.tax); // Tax percentage
+                        let discounted_price = item.price * qty - ((item.price * qty) * base_discount / 100);
+                        let tax_amount = discounted_price * tax / 100;
+                        let final_price = discounted_price + tax_amount;
+                        delivery_charge += parseInt(item.product_details.delivery_charge)
                         html += `    <tr>
                                         <td>
                                             <div class="d-flex">
@@ -144,46 +152,19 @@
                                         <td>₹ ${item.price}</td>
                                         <td>${item.qty}</td>
                                         <td>${item.size}</td>
+                                        <td>${item.product_details.base_discount}%</td>
+                                        <td>${item.product_details.tax}%</td>
                                         
                                         <td class="fw-medium text-end">
-                                            ₹ ${(item.price * item.qty).toFixed(2)}
+                                            ₹${final_price.toFixed(2)}
                                         </td>
                                     </tr>`
 
                                     total_discount += parseInt(item.product_details.base_discount, 10);
+                                    // delivary_charges += parseInt(item.product_details.delivery_charge, 10);
                     })
-                    
-                    $.ajax({
-                        url: "<?= base_url('/api/taxes') ?>",
-                        type: "GET",
-                        success: function (response) {
-                            if (response.status) {
-                                $.ajax({
-                                    url: "<?= base_url('/api/prescription') ?>",
-                                    type: "GET",
-                                    data:{order_id:order.order_id},
-                                    success: function (resp1) {
-                                        console.log(resp1)
-                                        if (resp1.status) {
-                                            html += `<tr class="border-top border-top-dashed">
-                                                        <td colspan="1"><iframe src="<?= base_url('public/uploads/user_images/')?>${resp1.data.src}" frameborder="0" width="300" height="300"></iframe></td>
-                                                        
-                                                    </tr>`
-                                            console.log(response);
-                                let tax = ''
-                                let delivary_charge = ''
-                                if (response.data.tax != '0' && response.data.tax != null && response.data.tax != "") {
-                                    tax = `₹` + response.data.tax ;
-                                } else {
-                                    tax = `<p style="color: green;">Free</p>` ;
-                                }
 
-                                if (response.data.delivary_charge != '0' && response.data.delivary_charge != null && response.data.delivary_charge != "") {
-                                    delivary_charge = `₹` + response.data.delivary_charge;
-                                } else {
-                                    delivary_charge = `<p style="color: green;">Free</p>`;
-                                }
-                                html += `<tr class="border-top border-top-dashed">
+                    html += `<tr class="border-top border-top-dashed">
                                             <td colspan="3"></td>
                                             <td colspan="2" class="fw-medium p-0">
                                                 <table class="table table-borderless mb-0">
@@ -193,12 +174,8 @@
                                                             <td class="text-end"> ₹ ${order.sub_total}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Tax : </td>
-                                                            <td class="text-end">${tax}</td>
-                                                        </tr>
-                                                        <tr>
                                                             <td>Shipping Charge :</td>
-                                                            <td class="text-end">${delivary_charge}</td>
+                                                            <td class="text-end">${delivery_charge}</td>
                                                         </tr>
                                                         <tr class="border-top border-top-dashed">
                                                             <th scope="row">Total (INR) :</th>
@@ -209,97 +186,154 @@
                                             </td>
                                         </tr>`
                                 $('#product_table_body').html(html)
-                                        } else {
-                                            console.log(resp1);
-                                        }
-                                    },
-                                    error: function (err) {
-                                        console.log(err);
-                                    },
-                                });
+                    
+                    // $.ajax({
+                    //     url: "<?= base_url('/api/taxes') ?>",
+                    //     type: "GET",
+                    //     success: function (response) {
+                    //         if (response.status) {
+                    //             $.ajax({
+                    //                 url: "<?= base_url('/api/prescription') ?>",
+                    //                 type: "GET",
+                    //                 data:{order_id:order.order_id},
+                    //                 success: function (resp1) {
+                    //                     console.log(resp1)
+                    //                     if (resp1.status) {
+                    //                         html += `<tr class="border-top border-top-dashed">
+                    //                                     <td colspan="1"><iframe src="<?= base_url('public/uploads/user_images/')?>${resp1.data.src}" frameborder="0" width="300" height="300"></iframe></td>
+                                                        
+                    //                                 </tr>`
+                    //                         console.log('tax',response);
+                    //             let tax = ''
+                    //             let delivary_charge = ''
+                    //             if (response.data.tax != '0' && response.data.tax != null && response.data.tax != "") {
+                    //                 tax = `₹` + response.data.tax ;
+                    //             } else {
+                    //                 tax = `<p style="color: green;">Free</p>` ;
+                    //             }
+
+                    //             if (response.data.delivary_charge != '0' && response.data.delivary_charge != null && response.data.delivary_charge != "") {
+                    //                 delivary_charge = `₹` + response.data.delivary_charge;
+                    //             } else {
+                    //                 delivary_charge = `<p style="color: green;">Free</p>`;
+                    //             }
+                    //             html += `<tr class="border-top border-top-dashed">
+                    //                         <td colspan="3"></td>
+                    //                         <td colspan="2" class="fw-medium p-0">
+                    //                             <table class="table table-borderless mb-0">
+                    //                                 <tbody>
+                    //                                     <tr>
+                    //                                         <td>Sub Total :</td>
+                    //                                         <td class="text-end"> ₹ ${order.sub_total}</td>
+                    //                                     </tr>
+                    //                                     <tr>
+                    //                                         <td>Tax : </td>
+                    //                                         <td class="text-end">${tax}</td>
+                    //                                     </tr>
+                    //                                     <tr>
+                    //                                         <td>Shipping Charge :</td>
+                    //                                         <td class="text-end">${delivary_charge}</td>
+                    //                                     </tr>
+                    //                                     <tr class="border-top border-top-dashed">
+                    //                                         <th scope="row">Total (INR) :</th>
+                    //                                         <th class="text-end">₹ ${order.total}</th>
+                    //                                     </tr>
+                    //                                 </tbody>
+                    //                             </table>
+                    //                         </td>
+                    //                     </tr>`
+                    //             $('#product_table_body').html(html)
+                    //                     } else {
+                    //                         console.log(resp1);
+                    //                     }
+                    //                 },
+                    //                 error: function (err) {
+                    //                     console.log(err);
+                    //                 },
+                    //             });
                                 
-                            } else {
-                                console.log(response);
-                            }
-                        },
-                        error: function (err) {
-                            console.log(err);
-                        },
-                    });
+                    //         } else {
+                    //             console.log(response);
+                    //         }
+                    //     },
+                    //     error: function (err) {
+                    //         console.log(err);
+                    //     },
+                    // });
                     
 
-                    $('#').html(` <div class="accordion accordion-flush" id="accordionFlushExample">
-                                <div class="accordion-item border-0">
-                                    <div class="accordion-header" id="headingOne">
-                                        <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
-                                            href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-shrink-0 avatar-xs">
-                                                    <div class="avatar-title bg-success rounded-circle material-shadow">
-                                                        <i class="ri-shopping-bag-line"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h6 class="fs-15 mb-0 fw-semibold">Order Placed </h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="accordion-item border-0">
-                                    <div class="accordion-header" id="headingThree">
-                                        <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
-                                            href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-shrink-0 avatar-xs">
-                                                    <div class="avatar-title bg-success rounded-circle material-shadow">
-                                                        <i class="ri-truck-line"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h6 class="fs-15 mb-1 fw-semibold">Shipping </h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="accordion-item border-0">
-                                    <div class="accordion-header" id="headingFour">
-                                        <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
-                                            href="#collapseFour" aria-expanded="false">
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-shrink-0 avatar-xs">
-                                                    <div
-                                                        class="avatar-title bg-light text-success rounded-circle material-shadow">
-                                                        <i class="ri-takeaway-fill"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h6 class="fs-14 mb-0 fw-semibold">Out For Delivery</h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="accordion-item border-0">
-                                    <div class="accordion-header" id="headingFive">
-                                        <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
-                                            href="#collapseFile" aria-expanded="false">
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-shrink-0 avatar-xs">
-                                                    <div
-                                                        class="avatar-title bg-light text-success rounded-circle material-shadow">
-                                                        <i class="mdi mdi-package-variant"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h6 class="fs-14 mb-0 fw-semibold">Delivered</h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>`)
+                    // $('#').html(` <div class="accordion accordion-flush" id="accordionFlushExample">
+                    //             <div class="accordion-item border-0">
+                    //                 <div class="accordion-header" id="headingOne">
+                    //                     <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
+                    //                         href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    //                         <div class="d-flex align-items-center">
+                    //                             <div class="flex-shrink-0 avatar-xs">
+                    //                                 <div class="avatar-title bg-success rounded-circle material-shadow">
+                    //                                     <i class="ri-shopping-bag-line"></i>
+                    //                                 </div>
+                    //                             </div>
+                    //                             <div class="flex-grow-1 ms-3">
+                    //                                 <h6 class="fs-15 mb-0 fw-semibold">Order Placed </h6>
+                    //                             </div>
+                    //                         </div>
+                    //                     </a>
+                    //                 </div>
+                    //             </div>
+                    //             <div class="accordion-item border-0">
+                    //                 <div class="accordion-header" id="headingThree">
+                    //                     <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
+                    //                         href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    //                         <div class="d-flex align-items-center">
+                    //                             <div class="flex-shrink-0 avatar-xs">
+                    //                                 <div class="avatar-title bg-success rounded-circle material-shadow">
+                    //                                     <i class="ri-truck-line"></i>
+                    //                                 </div>
+                    //                             </div>
+                    //                             <div class="flex-grow-1 ms-3">
+                    //                                 <h6 class="fs-15 mb-1 fw-semibold">Shipping </h6>
+                    //                             </div>
+                    //                         </div>
+                    //                     </a>
+                    //                 </div>
+                    //             </div>
+                    //             <div class="accordion-item border-0">
+                    //                 <div class="accordion-header" id="headingFour">
+                    //                     <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
+                    //                         href="#collapseFour" aria-expanded="false">
+                    //                         <div class="d-flex align-items-center">
+                    //                             <div class="flex-shrink-0 avatar-xs">
+                    //                                 <div
+                    //                                     class="avatar-title bg-light text-success rounded-circle material-shadow">
+                    //                                     <i class="ri-takeaway-fill"></i>
+                    //                                 </div>
+                    //                             </div>
+                    //                             <div class="flex-grow-1 ms-3">
+                    //                                 <h6 class="fs-14 mb-0 fw-semibold">Out For Delivery</h6>
+                    //                             </div>
+                    //                         </div>
+                    //                     </a>
+                    //                 </div>
+                    //             </div>
+                    //             <div class="accordion-item border-0">
+                    //                 <div class="accordion-header" id="headingFive">
+                    //                     <a class="accordion-button p-2 shadow-none" data-bs-toggle="collapse"
+                    //                         href="#collapseFile" aria-expanded="false">
+                    //                         <div class="d-flex align-items-center">
+                    //                             <div class="flex-shrink-0 avatar-xs">
+                    //                                 <div
+                    //                                     class="avatar-title bg-light text-success rounded-circle material-shadow">
+                    //                                     <i class="mdi mdi-package-variant"></i>
+                    //                                 </div>
+                    //                             </div>
+                    //                             <div class="flex-grow-1 ms-3">
+                    //                                 <h6 class="fs-14 mb-0 fw-semibold">Delivered</h6>
+                    //                             </div>
+                    //                         </div>
+                    //                     </a>
+                    //                 </div>
+                    //             </div>
+                    //         </div>`)
 
 
                 }

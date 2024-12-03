@@ -69,14 +69,29 @@ class Cart_Controller extends Api_Controller
             // Selecting the cart with the specified User
             // $cart = $UserCartModel->where('user_id', $user_id)->findAll();
             $CommonModel = new CommonModel();
+            // $sql = "SELECT
+            //     user_cart.uid as cart_id,
+            //     user_cart.user_id,
+            //     user_cart.product_id,
+            //     user_cart.variation_id,
+            //     user_cart.qty
+            // FROM
+            //     user_cart
+            // WHERE 
+            //     user_cart.user_id = '{$user_id}'";
             $sql = "SELECT
                 user_cart.uid as cart_id,
                 user_cart.user_id,
                 user_cart.product_id,
                 user_cart.variation_id,
-                user_cart.qty
+                user_cart.qty,
+                item_stocks.uid as item_stock_id,
+                item_stocks.sizes as size,
+                item_stocks.stocks as stock
             FROM
                 user_cart
+            JOIN
+                item_stocks ON user_cart.size = item_stocks.uid
             WHERE 
                 user_cart.user_id = '{$user_id}'";
 

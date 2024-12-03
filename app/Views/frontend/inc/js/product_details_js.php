@@ -274,8 +274,13 @@
                     var original_price = resp.data.base_discount ? (resp.data.base_price - (resp.data.base_price * (resp.data.base_discount / 100))).toFixed(2) : parseInt(resp.data.base_price).toFixed(2);
                     var base_price = resp.data.base_discount ? resp.data.base_price : "";
                     var base_discount = resp.data.base_discount ? resp.data.base_discount : "";
-                    $('#product_price').html('₹' + original_price);
+                    // $('#product_price').html('₹' + original_price);
                     $('#product_price_mobile').html('₹' + original_price);
+                    $('#product_price').html(`
+                                            <span style="font-weight: bold; color: black;">₹${original_price}</span>
+                                            <span class="text-muted smaller-text" id="base_price">&nbsp;MRP:<del>₹${base_price}</del></span>
+                                            <span class="text-danger ms-2 smaller-text">${base_discount}% off</span>
+                                        `);
                     product_price = original_price
                     let html1 = ``;
                     let html2 = ``;

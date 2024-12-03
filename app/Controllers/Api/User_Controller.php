@@ -968,6 +968,59 @@ class User_Controller extends Api_Controller
 
     }
 
+    // private function seller_list($data)
+    // {
+    //     $resp = [
+    //         "status" => false,
+    //         "message" => "Failed to update access.",
+    //         "data" => []
+    //     ];
+
+    //     try {
+
+    //         $sql = "SELECT
+    //                     vendor.uid AS vendor_id,
+    //                     vendor.user_img,
+    //                     vendor.signature_img,
+    //                     vendor.pan_img,
+    //                     vendor.aadhar_img,
+    //                     vendor.pin,
+    //                     vendor.pin2,
+    //                     vendor.pin3,
+    //                     vendor.pin4,
+    //                     vendor.pin5,
+    //                     users.uid AS user_id,
+    //                     users.user_name,
+    //                     users.number,
+    //                     users.email,
+    //                     users.status
+    //                 FROM
+    //                     vendor
+    //                 JOIN users ON vendor.user_id = users.uid
+    //                 WHERE
+    //                     (users.type = 'admin' OR users.type = 'seller')";
+    //         $CommonModel = new CommonModel();
+
+    //         $vendors = $CommonModel->customQuery($sql);
+    //         $vendors = json_decode(json_encode($vendors), true);
+    //         if (!empty($vendors)) {
+    //             $resp['status'] = true;
+    //             $resp['message'] = "All vendors data retrieved";
+    //             $resp['data'] = $vendors;
+    //         } else {
+    //             // If no access data found at all
+    //             $resp['message'] = "No vendors data found";
+    //         }
+
+    //     } catch (\Exception $e) {
+    //         // Catch any exceptions and set error message
+    //         $resp['message'] = $e->getMessage();
+    //     }
+
+    //     return $resp;
+
+    // }
+
     private function seller_list($data)
     {
         $resp = [
@@ -976,6 +1029,7 @@ class User_Controller extends Api_Controller
             "data" => []
         ];
 
+        // $this->prd($data['user_id']);
         try {
 
             $sql = "SELECT
@@ -984,11 +1038,8 @@ class User_Controller extends Api_Controller
                         vendor.signature_img,
                         vendor.pan_img,
                         vendor.aadhar_img,
-                        vendor.pin,
-                        vendor.pin2,
-                        vendor.pin3,
-                        vendor.pin4,
-                        vendor.pin5,
+                        -- vendor.gst, 
+                        -- vendor.tread_licence,
                         users.uid AS user_id,
                         users.user_name,
                         users.number,
@@ -996,14 +1047,29 @@ class User_Controller extends Api_Controller
                         users.status
                     FROM
                         vendor
-                    JOIN users ON vendor.user_id = users.uid
+                    JOIN 
+                        users ON vendor.user_id = users.uid
                     WHERE
                         (users.type = 'admin' OR users.type = 'seller')";
+
+                    if (!empty($data['user_id'])) {
+                        $user_id = $data['user_id'];
+                        $sql .= " AND
+                            users.uid = '{$user_id}';";
+                    }
             $CommonModel = new CommonModel();
 
             $vendors = $CommonModel->customQuery($sql);
             $vendors = json_decode(json_encode($vendors), true);
-            if (!empty($vendors)) {
+
+            if (count($vendors) > 0) {
+                
+                // $VendorAuthorizationModel = new VendorAuthorizationModel();
+                // foreach ($vendors as $key => $vendor) {
+                //     // $this->prd($vendor['user_id']);
+                //     $vendors[$key]['authorization_data'] = $VendorAuthorizationModel->where('user_id', $vendor['user_id'])->first();
+                // }
+               
                 $resp['status'] = true;
                 $resp['message'] = "All vendors data retrieved";
                 $resp['data'] = $vendors;

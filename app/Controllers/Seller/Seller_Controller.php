@@ -159,6 +159,54 @@ class Seller_Controller extends Main_Controller
 
     }
 
+    public function load_product_add_bulk()
+    {
+
+        $data = PAGE_DATA_SELLER;
+        $data = [
+            'data_page' => [],
+            'data_header' => [
+                'header_link' => ['load_product_add_bulk_css.php'],
+                'header_asset_link' => [],
+                'title' => 'Products',
+                'header' => [],
+                'sidebar' => ['products' => true],
+                'site' => 'seller'
+            ],
+            'data_footer' => [
+                'footer_link' => ['load_product_add_bulk_js.php'],
+                'footer_asset_link' => [],
+                'footer' => [],
+                'site' => 'seller'
+            ]
+        ];
+
+        $this->isAuth('/seller/load_product_add_bulk', $data);
+
+    }
+
+    public function load_product_bulk_edit(){
+        $data = PAGE_DATA_SELLER;
+        $data = [
+            'data_page' => [],
+            'data_header' => [
+                'header_link' => ['load_product_bulk_edit_css.php'],
+                'header_asset_link' => [],
+                'title' => 'Products | Edit',
+                'header' => [],
+                'sidebar' => ['products'=>true],
+                'site' => 'seller'
+            ],
+            'data_footer' => [
+                'footer_link' => ['load_product_bulk_edit_js.php'],
+                'footer_asset_link'=> [],
+                'footer' => [],
+                'site' => 'seller'
+            ]
+        ];
+
+        $this->isAuth('/seller/load_product_bulk_edit',$data);
+    }
 
     public function load_all_orders()
     {

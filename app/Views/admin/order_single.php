@@ -43,6 +43,8 @@
                                         <th scope="col">Item Price</th>
                                         <th scope="col">Quantity</th>
                                         <th scope="col">Size</th>
+                                        <th scope="col">Discount</th>
+                                        <th scope="col">Tax</th>
                                         <th scope="col" class="text-end">Total Amount</th>
                                     </tr>
                                 </thead>

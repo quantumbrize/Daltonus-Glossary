@@ -115,6 +115,9 @@ $routes->get('/seller/product/update',              'Seller\Seller_Controller::l
 $routes->get('/seller/product/variant/add',         'Seller\Seller_Controller::load_product_variant_add'); // single product variant
 $routes->get('/seller/orders/returns/details',      'Seller\Seller_Controller::load_order_return'); // single product variant
 
+$routes->get('/seller/product/bulk/add',            'Seller\Seller_Controller::load_product_add_bulk'); // Load add bullk product 
+$routes->get('/seller/product/bulk/edit',           'Seller\Seller_Controller::load_product_bulk_edit');
+
 
 
 

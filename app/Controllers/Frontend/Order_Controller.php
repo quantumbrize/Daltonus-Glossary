@@ -41,7 +41,7 @@ class Order_Controller extends Main_Controller
             'data_header' => [
                 'header_link' => ['order_success_css.php'],
                 'title' => 'Order Success',
-                'header' => [],
+                'header' => ['order_success'=>true],
                 'sidebar' => [],
                 'site' => 'frontend'
             ],

@@ -16,7 +16,7 @@
             },
             beforeSend: function () {},
             success: function (resp) {
-                console.log(resp);
+                console.log('cart',resp);
                 if (resp.status) {
                     user_cart.cart = resp.data;
                     let subTotal = 0;
@@ -24,12 +24,16 @@
 
                     // Loop through cart items and calculate subtotal and delivery fees
                     $.each(resp.data, function (index, item) {
+                        let tax = parseInt(item.product.tax); // Tax percentage
+                        // alert(tax)
                         var original_price = item.product.base_discount 
                             ? (item.product.base_price - (item.product.base_price * item.product.base_discount / 100)) 
                             : item.product.base_price;
+                        let tax_amount = original_price * tax / 100;
+                        let final_price = original_price + tax_amount;
 
                         // Update the subtotal by multiplying the discounted price with quantity
-                        subTotal += parseInt(original_price, 10) * parseInt(item.qty, 10);
+                        subTotal += parseInt(final_price, 10) * parseInt(item.qty, 10);
 
                         // Calculate delivery charge for the current item
                         let itemDeliveryCharge = item.product.delivery_charge ? item.product.delivery_charge : 0;

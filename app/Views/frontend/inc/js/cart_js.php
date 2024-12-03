@@ -228,12 +228,15 @@
                             product_image = `<?= base_url()?>${item.img_url}${item.product.product_img[0].src}`;
                         }
 
+                        // let tax = parseInt(item.product.tax); // Tax percentage
                         // Calculate original price and discounted price
                         var original_price = item.product.base_discount ? 
                             (item.product.base_price - (item.product.base_price * (item.product.base_discount / 100))).toFixed(2) : item.product.base_price;
                         var discounted_price = item.product.base_discount ? 
                             (item.product.base_price - (item.product.base_price * (item.product.base_discount / 100))).toFixed(2) : item.product.base_price;
 
+                        // let tax_amount = original_price * tax / 100;
+                        // let final_price = original_price + tax_amount;
                         // Calculate total price for this item (discounted price * quantity)
                         subTotal += parseInt(discounted_price, 10) * parseInt(item.qty, 10);
 

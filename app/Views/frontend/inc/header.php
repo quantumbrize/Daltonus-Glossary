@@ -80,7 +80,7 @@
       </div>
       <div class="header">
         
-        <?php if (isset($header['home'])) { ?>
+        <?php if (isset($header['home']) || isset($header['order_success'])) { ?>
           <div class="head-content">
             <button class="location-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeft">
               <img class="location_img" src="" id="company_logo_mob"

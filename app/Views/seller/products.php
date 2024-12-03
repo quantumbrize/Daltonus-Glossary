@@ -25,7 +25,7 @@
                     <div class="card">
                         <div class="card-header border-0">
                             <div class="row g-4">
-                                <div class="col-sm-auto">
+                                <!-- <div class="col-sm-auto">
                                     <div>
                                         <a href="<?= base_url('/seller/product/add') ?>" class="btn btn-success"
                                             id="addproduct-btn">
@@ -33,6 +33,20 @@
                                             AddProduct
                                         </a>
                                     </div>
+                                </div> -->
+                                <div class="col-sm-auto">
+                                        <a href="<?= base_url('/seller/product/bulk/add') ?>" class="btn btn-success"
+                                            id="addproduct-btn">
+                                            <i class="ri-add-line align-bottom me-1"></i>
+                                            Add Product
+                                        </a>
+                                </div>
+                                <div class="col-sm-auto">
+                                    <a href="<?= base_url('/seller/product/bulk/edit') ?>" class="btn btn-success"
+                                        id="addproduct-btn">
+                                        <i class="ri-add-line align-bottom me-1"></i>
+                                        Edit Product
+                                    </a>
                                 </div>
                                 <div class="col-sm" style="display: none;">
                                     <div class="d-flex justify-content-sm-end">
