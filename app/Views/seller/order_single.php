@@ -49,6 +49,8 @@
                                         <th scope="col">Product Details</th>
                                         <th scope="col">Item Price</th>
                                         <th scope="col">Quantity</th>
+                                        <th scope="col">Discount</th>
+                                        <th scope="col">Tax</th>
                                         <th scope="col">Status</th>
                                         <th scope="col" class="text-end">Total Amount</th>
                                     </tr>
@@ -72,7 +74,7 @@
                         <div class="d-flex">
                             <h5 class="card-title flex-grow-1 mb-0">Customer Details</h5>
                             <div class="flex-shrink-0">
-                                <a href="javascript:void(0);" class="link-secondary">View Profile</a>
+                                <!-- <a href="javascript:void(0);" class="link-secondary">View Profile</a> -->
                             </div>
                         </div>
                     </div>
@@ -93,14 +95,14 @@
                     </div>
                 </div>
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0"><i class="ri-secure-payment-line align-bottom me-1 text-muted"></i>
                             Payment Details</h5>
                     </div>
                     <div class="card-body" id="user_pay_bx">
                     </div>
-                </div>
+                </div> -->
                 <!--end card-->
             </div>
             <!--end col-->

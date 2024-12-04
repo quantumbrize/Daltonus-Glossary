@@ -230,25 +230,34 @@
 
                         // let tax = parseInt(item.product.tax); // Tax percentage
                         // Calculate original price and discounted price
-                        var original_price = item.product.base_discount ? 
-                            (item.product.base_price - (item.product.base_price * (item.product.base_discount / 100))).toFixed(2) : item.product.base_price;
-                        var discounted_price = item.product.base_discount ? 
-                            (item.product.base_price - (item.product.base_price * (item.product.base_discount / 100))).toFixed(2) : item.product.base_price;
+                        // var original_price = item.product.base_discount ? 
+                        //     (item.product.base_price - (item.product.base_price * (item.product.base_discount / 100))).toFixed(2) : item.product.base_price;
+                        // var discounted_price = item.product.base_discount ? 
+                        //     (item.product.base_price - (item.product.base_price * (item.product.base_discount / 100))).toFixed(2) : item.product.base_price;
 
                         // let tax_amount = original_price * tax / 100;
                         // let final_price = original_price + tax_amount;
                         // Calculate total price for this item (discounted price * quantity)
-                        subTotal += parseInt(discounted_price, 10) * parseInt(item.qty, 10);
+                        // subTotal += parseInt(discounted_price, 10) * parseInt(item.qty, 10);
 
                         // Calculate delivery charge for this item
-                        let itemDeliveryCharge = item.product.delivery_charge ? item.product.delivery_charge : 0;
-                        totalDeliveryCharge += parseInt(itemDeliveryCharge, 10);
+                        // let itemDeliveryCharge = item.product.delivery_charge ? item.product.delivery_charge : 0;
+                        // totalDeliveryCharge += parseInt(itemDeliveryCharge, 10);
 
                         // Calculate tax (if available in the response) or assume a fixed rate
-                        let itemTax = item.product.tax ? item.product.tax : 0; // Replace with actual logic for tax calculation if needed
+                        // let itemTax = item.product.tax ? item.product.tax : 0; // Replace with actual logic for tax calculation if needed
 
-                        console.log('charge', item.product.delivery_charge);
-                        console.log('tax', itemTax);
+                        // console.log('charge', item.product.delivery_charge);
+                        // console.log('tax', itemTax);
+                        let actual_price = item.product.base_price;
+                        let qty = item.qty; // Quantity of the product
+                        let base_discount = parseInt(item.product.base_discount); // Discount percentage
+                        let tax = parseInt(item.product.tax); // Tax percentage
+                        let discounted_price = actual_price * qty - ((actual_price * qty) * base_discount / 100);
+                        let tax_amount = discounted_price * tax / 100;
+                        let final_price = discounted_price + tax_amount;
+                        subTotal += final_price
+                        totalDeliveryCharge += parseInt(item.product.delivery_charge)
 
                         // Calculate total quantity based on the available stock for each size
                         let totalQuantity = 0;
@@ -275,9 +284,9 @@
                                         </div>
                                         <!-- Display discounted price, tax, and delivery charge -->
                                         <div class="item-details">
-                                            <p>Discounted Price: ₹${discounted_price}</p>
-                                            <p>Tax: ₹${itemTax}</p>
-                                            <p>Delivery Charge: ₹${itemDeliveryCharge}</p>
+                                            <p>Discount: ${base_discount}%</p>
+                                            <p>Tax: ₹${tax}</p>
+                                            <p>Final Price: ₹${final_price}</p>
                                         </div>
                                     </div>
                                     <button class="remove-item" onclick="remove_cart_item('${item.cart_id}')">×</button>
@@ -285,7 +294,7 @@
                     });
 
                     $('#cart_item').html(html);
-                    $('.subtotal_amount').html(`₹${subTotal}`);
+                    $('.subtotal_amount').html(`₹${subTotal.toFixed(2)}`);
                     let grand_total = subTotal + totalDeliveryCharge; // Add delivery charge to the grand total
 
                     // Set the total delivery charge
@@ -296,7 +305,7 @@
                     }
 
                     // Checkout Button Logic
-                    $('.checkout_button').html(`<p class="total-price">₹${grand_total} </p>
+                    $('.checkout_button').html(`<p class="total-price">₹${grand_total.toFixed(2)} </p>
                                                     <a href="<?= base_url('billing')?>">
                                                     <button class="checkout">Checkout</button>
                                                     </a>`);

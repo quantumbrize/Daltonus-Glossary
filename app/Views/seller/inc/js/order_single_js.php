@@ -55,8 +55,9 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li><i class="ri-mail-line me-2 align-middle text-muted fs-16"></i>${order.user.email}</li>
-                                <li><i class="ri-phone-line me-2 align-middle text-muted fs-16"></i>${order.user.number}</li>`)
+                                <!-- <li><i class="ri-mail-line me-2 align-middle text-muted fs-16"></i>${order.user.email}</li>
+                                <li><i class="ri-phone-line me-2 align-middle text-muted fs-16"></i>${order.user.number}</li> -->
+                                `) 
 
                     $('#user_addr_bx').html(`<ul class="list-unstyled vstack gap-2 fs-13 mb-0">
                                                 <li class="fw-medium fs-14">${order.user_name}</li>
@@ -66,39 +67,39 @@
                                                 <li>${order.address.state} , ${order.address.country}</li>
                                                 <li>PIN - ${order.address.zipcode}</li>
                                             </ul>`)
-                    $('#user_pay_bx').html(` <div class="d-flex align-items-center mb-2">
-                            <div class="flex-shrink-0">
-                                <p class="text-muted mb-0">Pay Id:</p>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                                <h6 class="mb-0">${order.payment.uid}</h6>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center mb-2">
-                            <div class="flex-shrink-0">
-                                <p class="text-muted mb-0">Payment Method:</p>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                                <h6 class="mb-0">${order.payment.type}</h6>
-                            </div>
-                        </div>
+                    // $('#user_pay_bx').html(` <div class="d-flex align-items-center mb-2">
+                    //         <div class="flex-shrink-0">
+                    //             <p class="text-muted mb-0">Pay Id:</p>
+                    //         </div>
+                    //         <div class="flex-grow-1 ms-2">
+                    //             <h6 class="mb-0">${order.payment.uid}</h6>
+                    //         </div>
+                    //     </div>
+                    //     <div class="d-flex align-items-center mb-2">
+                    //         <div class="flex-shrink-0">
+                    //             <p class="text-muted mb-0">Payment Method:</p>
+                    //         </div>
+                    //         <div class="flex-grow-1 ms-2">
+                    //             <h6 class="mb-0">${order.payment.type}</h6>
+                    //         </div>
+                    //     </div>
 
-                        <div class="d-flex align-items-center mb-2">
-                            <div class="flex-shrink-0">
-                                <p class="text-muted mb-0">Payment Status:</p>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                                <h6 class="mb-0">${order.payment.status}</h6>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                                <p class="text-muted mb-0">Total Amount:</p>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                                <h6 class="mb-0"> ${order.total}</h6>
-                            </div>
-                        </div>`)
+                    //     <div class="d-flex align-items-center mb-2">
+                    //         <div class="flex-shrink-0">
+                    //             <p class="text-muted mb-0">Payment Status:</p>
+                    //         </div>
+                    //         <div class="flex-grow-1 ms-2">
+                    //             <h6 class="mb-0">${order.payment.status}</h6>
+                    //         </div>
+                    //     </div>
+                    //     <div class="d-flex align-items-center">
+                    //         <div class="flex-shrink-0">
+                    //             <p class="text-muted mb-0">Total Amount:</p>
+                    //         </div>
+                    //         <div class="flex-grow-1 ms-2">
+                    //             <h6 class="mb-0"> ${order.total}</h6>
+                    //         </div>
+                    //     </div>`)
 
 
                     $('#order_id').html(order.order_id)
@@ -108,13 +109,25 @@
                         console.log(item.status)
 
                         if (vendor_id == item.product_details.vendor_id) {
+                            let img_link = item.product_config_id ? '/public/uploads/variant_images/' : '/public/uploads/product_images/'
+                            let product_image = '<?=base_url()?>public/assets/ztImages/demo_img.jpg'
+                            if(item.product_details.product_img != ""){
+                                product_image = `<?=base_url()?>${img_link + item.product_details.product_img[0].src}`
+                            }
+
+                            let qty = item.qty; // Quantity of the product
+                            let base_discount = parseInt(item.product_details.base_discount); // Discount percentage
+                            let tax = parseInt(item.product_details.tax); // Tax percentage
+                            let discounted_price = item.price * qty - ((item.price * qty) * base_discount / 100);
+                            let tax_amount = discounted_price * tax / 100;
+                            let final_price = discounted_price + tax_amount;
                             html += `    <tr>
                                             <td>
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 avatar-md bg-light rounded p-1">
                                                         <img
                                                             style="height: 100%; width: 100%; object-fit: contain; background: white;"
-                                                            src="<?= base_url('public/uploads/product_images/') ?>${item.product_details.product_img[0].src}" 
+                                                            src="${product_image}" 
                                                             alt="" 
                                                             class="img-fluid d-block">
                                                     </div>
@@ -127,6 +140,8 @@
                                             </td>
                                             <td>₹ ${item.price}</td>
                                             <td>${item.qty}</td>
+                                            <td>  ${base_discount}%</td>
+                                            <td>  ${tax}%</td>
                                             <td>
                                                 <select class="form-select form-select-sm" onChange="change_order_item_status('${item.uid}')" id="status_slc_${item.uid}">
                                                     <option value="placed" ${item.status == 'placed' ? 'selected' : '' }>Placed</option>
@@ -138,7 +153,7 @@
                                                 </select>
                                             </td>
                                             <td class="fw-medium text-end">
-                                                ₹ ${(item.price * item.qty).toFixed(2)}
+                                                ₹ ${final_price.toFixed(2)}
                                             </td>
                                         </tr>`
                         }

@@ -21,16 +21,28 @@
                     // Loop through cart items and calculate subtotal and delivery fees
                     $.each(resp.data, function (index, item) {
                         // Calculate the discounted price for each item
-                        var original_price = item.product.base_discount 
-                            ? (item.product.base_price - (item.product.base_price * item.product.base_discount / 100)) 
-                            : item.product.base_price;
+                        // var original_price = item.product.base_discount 
+                        //     ? (item.product.base_price - (item.product.base_price * item.product.base_discount / 100)) 
+                        //     : item.product.base_price;
 
                         // Update the subtotal by multiplying the discounted price with quantity
-                        subTotal += parseInt(original_price, 10) * parseInt(item.qty, 10);
+                        // subTotal += parseInt(original_price, 10) * parseInt(item.qty, 10);
 
                         // Calculate delivery charge for the current item
+                        // let itemDeliveryCharge = item.product.delivery_charge ? item.product.delivery_charge : 0;
+                        // totalDeliveryCharge += parseInt(itemDeliveryCharge, 10);
+
+                        let actual_price = item.product.base_price;
+                        let qty = item.qty; // Quantity of the product
+                        let base_discount = parseInt(item.product.base_discount); // Discount percentage
+                        let tax = parseInt(item.product.tax); // Tax percentage
+                        let discounted_price = actual_price * qty - ((actual_price * qty) * base_discount / 100);
+                        let tax_amount = discounted_price * tax / 100;
+                        let final_price = discounted_price + tax_amount;
+                        subTotal += final_price
+                        // Calculate delivery charge for the current item
                         let itemDeliveryCharge = item.product.delivery_charge ? item.product.delivery_charge : 0;
-                        totalDeliveryCharge += parseInt(itemDeliveryCharge, 10);
+                        totalDeliveryCharge += parseInt(itemDeliveryCharge);
                     });
 
                     // Display the subtotal

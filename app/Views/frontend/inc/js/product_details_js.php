@@ -278,8 +278,8 @@
                     $('#product_price_mobile').html('₹' + original_price);
                     $('#product_price').html(`
                                             <span style="font-weight: bold; color: black;">₹${original_price}</span>
-                                            <span class="text-muted smaller-text" id="base_price">&nbsp;MRP:<del>₹${base_price}</del></span>
-                                            <span class="text-danger ms-2 smaller-text">${base_discount}% off</span>
+                                            <span class="smaller-text-base-price" id="base_price">&nbsp;MRP:<del>₹${base_price}</del></span>
+                                            <span class="smaller-text-discount">${base_discount}% off</span>
                                         `);
                     product_price = original_price
                     let html1 = ``;

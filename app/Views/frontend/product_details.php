@@ -1,6 +1,12 @@
 <style>
-    .smaller-text {
+    .smaller-text-base-price {
+        font-size: 12px;
+        color:red;
+    }
+    .smaller-text-discount {
+        font-weight: bold;
         font-size: 15px;
+        color:green;
     }
     .bold-black {
     font-weight: bold;

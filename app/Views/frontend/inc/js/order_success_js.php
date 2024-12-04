@@ -111,6 +111,7 @@
                                     <table style="width: 100%;border-collapse: collapse;" cellspacing="0" cellpadding="0">`
 
                     let total_discount = 0
+                    let totalDeliveryCharge = 0
                     if (order.products.length > 0) {
                         $.each(order.products, function (index, item) {
                             console.log(item);
@@ -120,6 +121,18 @@
                             if(item.product_details.product_img != ""){
                                 product_image = `<?=base_url()?>${img_link + item.product_details.product_img[0].src}`
                             }
+
+                            let actual_price = item.product_details.base_price;
+                            let qty = item.qty; // Quantity of the product
+                            let base_discount = parseInt(item.product_details.base_discount); // Discount percentage
+                            let tax = parseInt(item.product_details.tax); // Tax percentage
+                            let discounted_price = actual_price * qty - ((actual_price * qty) * base_discount / 100);
+                            let tax_amount = discounted_price * tax / 100;
+                            let final_price = discounted_price + tax_amount;
+                            // subTotal += final_price
+                            // Calculate delivery charge for the current item
+                            let itemDeliveryCharge = item.product_details.delivery_charge ? item.product_details.delivery_charge : 0;
+                            totalDeliveryCharge += parseInt(itemDeliveryCharge);
 
                             html += ` <tr>
                                         <td style="padding: 12px 5px; vertical-align: top;width: 65px;">
@@ -140,12 +153,14 @@
                                             <h6
                                                 style="font-size: 15px; margin: 0px;font-weight: 400; font-family: 'Inter', sans-serif;color: #fafafa;">
                                                 Qty - ${item.qty}<br>
-                                                Price - ₹ ${item.price}</h6>
+                                                Price - ₹ ${item.price}<br>
+                                                Discount - ${base_discount}%<br>
+                                                Tax - ${tax}%</h6>
                                         </td>
                                         <td style="padding: 12px 5px; vertical-align: top;text-align: end;">
                                             <h6
                                                 style="font-size: 15px; margin: 0px;font-weight: 600; font-family: 'Inter', sans-serif;color: #fafafa;">
-                                                ₹ ${item.qty * item.price}</h6>
+                                                ₹ ${final_price.toFixed(2)}</h6>
                                         </td>
                                     </tr>`
                                     total_discount += parseInt(item.product_details.base_discount, 10);
@@ -168,18 +183,7 @@
                                 <td style="padding: 12px 8px; font-size: 15px;text-align: end; ">
                                     <h6
                                         style="font-size: 15px; margin: 0px;font-weight: 600; font-family: 'Inter', sans-serif;color: #fafafa;">
-                                        Free</h6>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" style="padding: 12px 8px; font-size: 15px;">
-                                    Discount)
-                                </td>
-                                <td style="padding: 12px 8px; font-size: 15px;text-align: end; ">
-                                    <h6
-                                        style="font-size: 15px; margin: 0px;font-weight: 600; font-family: 'Inter', sans-serif;color: #fafafa;">
-                                         ${total_discount}%</h6>
-
+                                        ₹ ${totalDeliveryCharge}</h6>
                                 </td>
                             </tr>
                             <tr>
