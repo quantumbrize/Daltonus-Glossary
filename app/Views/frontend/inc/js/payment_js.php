@@ -236,4 +236,34 @@
     }
 
 
+//     function shipping_login() {
+       
+//        api_key = <?=SHIPPING_KEY?>
+//        username = <?=SHIPPING_USER_NAME?>
+//        $.ajax({
+//            url: '<?= base_url('https://www.icarry.in/api_login') ?>',
+//            type: "POST",
+//            contentType: 'application/json',
+//            data: JSON.stringify({
+//                api_key: api_key,
+//                username: username,
+//            }),
+//            beforeSend: function () {
+//                $('#place_order_btn').prop('disabled', true);
+//            },
+//            success: function (resp) {
+//                console.log(resp)
+//                if (resp.status) {
+
+//                } else {
+                 
+//                }
+//            },
+//            error: function (err) {
+//                console.error(err)
+//            }
+//        })
+//    }
+
+
 </script>

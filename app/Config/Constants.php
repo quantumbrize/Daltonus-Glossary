@@ -235,6 +235,11 @@ defined('PATH_BANNER_IMG')          || define('PATH_BANNER_IMG', ROOTPATH  . 'pu
 defined('PATH_LOGO')                || define('PATH_LOGO', ROOTPATH  . 'public/uploads/logo');
 defined('PATH_PROMOTION_CARD_IMG')  || define('PATH_PROMOTION_CARD_IMG', ROOTPATH  . 'public/uploads/promotion_card_images');
 
+//////////////////////////////////////////////__SHIPPING_AUTH
+defined('SHIPPING_KEY')                || define('SHIPPING_KEY', 'B1M6Se65GnWzaTZBRoEW7cDZQ4mxRa60VGRu8UxBB8OI26uybUg4uRkfWdpcWhl5crtprvkY4uvTim4UxkT0QXGbAZyvijh3KTWYqOE5G8yCzv3hRsmO1toFNFPh3IfHBzAbyHP6dB0p73i8nBxTmYQdjoJfNPiYnoGnUXfGrO7aoF3RXu7bWV5Zx55k1riqU3QLcUxWfJXm4w6W45shhthN5OPwEETwLtQifwElqnhhXejCpYPpHmDriEL7toJu');
+defined('SHIPPING_USER_NAME')          || define('SHIPPING_USER_NAME', 'ela12031');
+defined('ICARRY_API_URL')              || define('ICARRY_API_URL', 'https://www.icarry.in/');
+
 
 //////////////////////////////////////////////__PAGEDATA
 define(

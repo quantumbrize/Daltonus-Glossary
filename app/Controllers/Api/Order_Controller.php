@@ -297,81 +297,97 @@ class Order_Controller extends Main_Controller
             $OrderItemsModel = new OrderItemsModel();
             $PaymentsModel = new PaymentsModel();
             $ProductItemModel = new ProductItemModel();
+            $AddressModel = new AddressModel();
     
             // Check if address exists in user_data
             if (!empty($user_data['address']['id'])) {
                 date_default_timezone_set('Asia/Kolkata');
-    
-                // Prepare order data
-                $orderData = [
-                    "uid" => $this->generate_uid(UID_ORDERS),
-                    "user_id" => $user_data['user']['uid'], // Make sure the user data exists
-                    "shipping_address_id" => $user_data['address']['uid'], // Use the address UID
-                    "shipping_method" => $data['shipping_method'],
-                    "user_name" => $user_data['name'], // Name should be present in user_data
-                    "phone_number" => $user_data['number'], // Ensure the number is correctly passed
-                    "email" => $user_data['email'], // Ensure email is correctly passed
-                    "order_discount_amount" => $user_cart['discountAmount'] ?? 0, // Check for optional values
-                    "order_discount_percentage" => $user_cart['discountPercentage'] ?? 0,
-                    "sub_total" => $user_cart['subTotal'] ?? 0,
-                    "total" => $user_cart['total'] ?? 0,
-                    "payment_type" => 'cod',
-                    "created_at" => date('Y-m-d H:i:s')
-                ];
-    
-                // Insert order data
-                $OrdersIsSaved = $OrdersModel->insert($orderData);
-    
-                // Insert payment data
-                $paymentData = [
-                    "uid" => $this->generate_uid(UID_PAYMENTS),
-                    "order_id" => $orderData['uid'],
-                    "type" => $payment_data['method']
-                ];
-                $PaymentsIsSaved = $PaymentsModel->insert($paymentData);
-    
-                // Insert order items
-                $OrderItemsIsSaved = true;
-                foreach ($user_cart['cart'] as $cart) {
-                    $discountAmount = $this->calculateDiscount($cart['product']['base_price'], $cart['product']['base_discount']);
-                    $basePrice = (float)$cart['product']['base_price'];
-                    $discountsAmount = (float)$discountAmount;
-                    $priceAfterDiscount = $basePrice - $discountsAmount;
-    
-                    $OrderItemsData = [
-                        "uid" => $this->generate_uid(UID_ORDERS_ITEMS),
-                        "order_id" => $orderData['uid'],
-                        "product_id" => $cart['product_id'],
-                        "product_config_id" => $cart['variation_id'],
-                        "price" => $priceAfterDiscount,
-                        "qty" => $cart['qty'],
-                        "size" => $cart['size'],
-                    ];
-    
-                    if (!$OrderItemsModel->insert($OrderItemsData)) {
-                        $OrderItemsIsSaved = false;
-                        break;
+                $user_address = $AddressModel->where('uid', $user_data['address']['uid'])->first();
+                if(!empty($user_address)){
+                    $shipping_auth = $this->shipping_login();
+                    
+                    if($shipping_auth['status']){
+                        $shipping_avelablity = $this->check_serviceability($shipping_auth['api_token'], $user_address['zipcode']);
+                        $this->prd($shipping_avelablity);
+                        // Prepare order data
+                        $orderData = [
+                            "uid" => $this->generate_uid(UID_ORDERS),
+                            "user_id" => $user_data['user']['uid'], // Make sure the user data exists
+                            "shipping_address_id" => $user_data['address']['uid'], // Use the address UID
+                            "shipping_method" => $data['shipping_method'],
+                            "user_name" => $user_data['name'], // Name should be present in user_data
+                            "phone_number" => $user_data['number'], // Ensure the number is correctly passed
+                            "email" => $user_data['email'], // Ensure email is correctly passed
+                            "order_discount_amount" => $user_cart['discountAmount'] ?? 0, // Check for optional values
+                            "order_discount_percentage" => $user_cart['discountPercentage'] ?? 0,
+                            "sub_total" => $user_cart['subTotal'] ?? 0,
+                            "total" => $user_cart['total'] ?? 0,
+                            "payment_type" => 'cod',
+                            "created_at" => date('Y-m-d H:i:s')
+                        ];
+            
+                        // Insert order data
+                        $OrdersIsSaved = $OrdersModel->insert($orderData);
+            
+                        // Insert payment data
+                        $paymentData = [
+                            "uid" => $this->generate_uid(UID_PAYMENTS),
+                            "order_id" => $orderData['uid'],
+                            "type" => $payment_data['method']
+                        ];
+                        $PaymentsIsSaved = $PaymentsModel->insert($paymentData);
+            
+                        // Insert order items
+                        $OrderItemsIsSaved = true;
+                        foreach ($user_cart['cart'] as $cart) {
+                            $discountAmount = $this->calculateDiscount($cart['product']['base_price'], $cart['product']['base_discount']);
+                            $basePrice = (float)$cart['product']['base_price'];
+                            $discountsAmount = (float)$discountAmount;
+                            $priceAfterDiscount = $basePrice - $discountsAmount;
+            
+                            $OrderItemsData = [
+                                "uid" => $this->generate_uid(UID_ORDERS_ITEMS),
+                                "order_id" => $orderData['uid'],
+                                "product_id" => $cart['product_id'],
+                                "product_config_id" => $cart['variation_id'],
+                                "price" => $priceAfterDiscount,
+                                "qty" => $cart['qty'],
+                                "size" => $cart['size'],
+                            ];
+            
+                            if (!$OrderItemsModel->insert($OrderItemsData)) {
+                                $OrderItemsIsSaved = false;
+                                break;
+                            } else {
+                                // Update stock quantity for the product
+                                $prev_stock = $ProductItemModel->where('product_id', $cart['product_id'])->first();
+                                $new_qty = $prev_stock['quantity'] - $cart['qty'];
+                                $new_qty = $new_qty < 0 ? 0 : $new_qty;
+                                $ProductItemModel->where('product_id', $cart['product_id'])->set('quantity', $new_qty)->update();
+                            }
+                        }
+            
+                        // Set the response based on success
+                        if ($OrdersIsSaved && $PaymentsIsSaved && $OrderItemsIsSaved) {
+                            $UserCartModel = new UserCartModel();
+                            $deleted = $UserCartModel->where('user_id', $orderData['user_id'])->delete();
+                            if ($deleted) {
+                                $resp['status'] = true;
+                                $resp['message'] = 'Order Placed Successfully';
+                                $resp['data'] = ['order_id' => $orderData['uid']];
+                            }
+                        } else {
+                            $resp['message'] = 'Failed to place the order.';
+                        }
+                        
                     } else {
-                        // Update stock quantity for the product
-                        $prev_stock = $ProductItemModel->where('product_id', $cart['product_id'])->first();
-                        $new_qty = $prev_stock['quantity'] - $cart['qty'];
-                        $new_qty = $new_qty < 0 ? 0 : $new_qty;
-                        $ProductItemModel->where('product_id', $cart['product_id'])->set('quantity', $new_qty)->update();
+                        $resp['message'] = $shipping_auth['msg'];
                     }
-                }
-    
-                // Set the response based on success
-                if ($OrdersIsSaved && $PaymentsIsSaved && $OrderItemsIsSaved) {
-                    $UserCartModel = new UserCartModel();
-                    $deleted = $UserCartModel->where('user_id', $orderData['user_id'])->delete();
-                    if ($deleted) {
-                        $resp['status'] = true;
-                        $resp['message'] = 'Order Placed Successfully';
-                        $resp['data'] = ['order_id' => $orderData['uid']];
-                    }
+
                 } else {
-                    $resp['message'] = 'Failed to place the order.';
+                    $resp['message'] = 'Address Not Found';
                 }
+                
             } else {
                 $resp['message'] = 'Please Add A Billing Address';
             }
@@ -1297,6 +1313,87 @@ class Order_Controller extends Main_Controller
         return $resp;
     }
 
+    function check_serviceability($api_token, $pincode)
+    {
+        $url = ICARRY_API_URL . "api_check_pincode&api_token=" . $api_token;
+
+        $data = [
+            "pincode" => $pincode
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+        ]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $responseData = json_decode($response, true);
+        return $responseData;
+    }
+
+    private function shipping_login()
+    {
+        $api_key = 'B1M6Se65GnWzaTZBRoEW7cDZQ4mxRa60VGRu8UxBB8OI26uybUg4uRkfWdpcWhl5crtprvkY4uvTim4UxkT0QXGbAZyvijh3KTWYqOE5G8yCzv3hRsmO1toFNFPh3IfHBzAbyHP6dB0p73i8nBxTmYQdjoJfNPiYnoGnUXfGrO7aoF3RXu7bWV5Zx55k1riqU3QLcUxWfJXm4w6W45shhthN5OPwEETwLtQifwElqnhhXejCpYPpHmDriEL7toJu';
+        $username = 'ela12031';
+
+        $url = "https://www.icarry.in/api_login";
+
+        // Create the data array
+        $data = [
+            "key" => $api_key,
+            "username" => $username,
+        ];
+
+        // Initialize cURL session
+        $ch = curl_init();
+
+        // Set cURL options
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+        ]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+        // Execute cURL and get the response
+        $response = curl_exec($ch);
+
+        // Check for cURL errors
+        if (curl_errno($ch)) {
+            echo "cURL Error: " . curl_error($ch);
+        } else {
+            // Process the response
+            $responseData = json_decode($response, true);
+            // $this->prd($responseData);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                echo "JSON Error: Unable to parse the response.";
+            } elseif (isset($responseData['success'])) {
+                $api_token = $responseData['api_token']; // Extract the token for future use
+                // echo "Login successful: API token generated.";
+                return ['status' => true, 'api_token' =>  $responseData['api_token'], 'msg' => 'successfull'];
+                // return $this->check_serviceability($api_token, $pincode = '712410');
+                // Store $api_token securely for subsequent API requests
+            } else {
+                $error_message = $responseData['error']['key'] ?? $responseData['error']['ip'] ?? 'Unknown error';
+                return ['status' => false, 'api_token' =>  '', 'msg' => $error_message];
+                // echo "Login failed: " . $error_message;
+            }
+        }
+
+        // Close cURL session
+        curl_close($ch);
+    }
+
+    
+
 
 
 
@@ -1317,6 +1414,14 @@ class Order_Controller extends Main_Controller
         $data = $this->request->getGET();
         $resp = $this->order_payment_status_update($data);
         return $this->response->setJSON($resp);
+    }
+
+    public function POST_shipping_login()
+    {
+        // $data = $this->request->getPost();
+        $resp = $this->shipping_login();
+        return $this->response->setJSON($resp);
+        // return 'hello';
     }
 
     public function GET_user_prescription()

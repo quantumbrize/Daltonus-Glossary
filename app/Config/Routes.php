@@ -183,6 +183,7 @@ $routes->get('/api/order/returns/status/update',    'Api\Order_Controller::GET_o
 $routes->get('/api/order/payment/status/update',    'Api\Order_Controller::GET_order_payment_status_update'); // Update order payment status
 $routes->get('/api/order/returns',                  'Api\Order_Controller::GET_user_order_returns'); // Get user order returns
 $routes->get('/api/prescription',                   'Api\Order_Controller::GET_user_prescription'); // Get user prescription
+$routes->post('/api/shipping-login',                'Api\Order_Controller::POST_shipping_login'); // Get user prescription
 
 $routes->post('/api/banner/add',                    'Api\Banner_Controller::POST_add_banner'); // Add banner
 $routes->get('/api/banners',                        'Api\Banner_Controller::GET_banners'); // Get banners
