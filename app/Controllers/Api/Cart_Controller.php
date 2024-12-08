@@ -164,6 +164,10 @@ class Cart_Controller extends Api_Controller
                 product_item.delivery_charge,
                 product_item.manufacturer_brand AS manufacturer_brand,
                 product_item.manufacturer_name AS manufacturer_name,
+                product_parcel.weight,
+                product_parcel.length,
+                product_parcel.breadth,
+                product_parcel.height,
                 product_config.uid AS product_config_id,
                 product_config.created_at AS created_at,
                 product_meta_detalis.uid AS meta_id,
@@ -190,7 +194,9 @@ class Cart_Controller extends Api_Controller
             LEFT JOIN
                 users ON vendor.user_id = users.uid
             LEFT JOIN
-                product_size_list ON product.size_id = product_size_list.uid";
+                product_size_list ON product.size_id = product_size_list.uid
+            LEFT JOIN
+                product_parcel ON product.uid = product_parcel.product_id";
 
             if (!empty($data['config_id'])) {
                 $config_id = $data['config_id'];
@@ -240,6 +246,10 @@ class Cart_Controller extends Api_Controller
                 product_item.size_chart,
                 product_item.manufacturer_brand AS manufacturer_brand,
                 product_item.manufacturer_name AS manufacturer_name,
+                product_parcel.weight,
+                product_parcel.length,
+                product_parcel.breadth,
+                product_parcel.height,
                 product_meta_detalis.uid AS meta_id,
                 product_meta_detalis.meta_title,
                 product_meta_detalis.meta_description,
@@ -262,7 +272,9 @@ class Cart_Controller extends Api_Controller
             LEFT JOIN
                 users ON vendor.user_id = users.uid
             LEFT JOIN
-                product_size_list ON product.size_id = product_size_list.uid";
+                product_size_list ON product.size_id = product_size_list.uid
+            LEFT JOIN
+                product_parcel ON product.uid = product_parcel.product_id";
 
             if (!empty($data['p_id'])) {
                 $p_id = $data['p_id'];

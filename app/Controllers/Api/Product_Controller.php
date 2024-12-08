@@ -20,6 +20,7 @@ use App\Models\ItemStocksModel;
 use App\Models\ExpartReviewModel;
 use App\Models\ReviewModel;
 use App\Models\ProductPricesModel;
+use App\Models\ProductParcelModel;
 
 
 class Product_Controller extends Api_Controller
@@ -177,8 +178,9 @@ class Product_Controller extends Api_Controller
         $product_item_data = [];
         $item_stock_data = [];
         $item_prices = [];
+        $product_item_parcel = [];
         $ProductSizeListModel = new ProductSizeListModel();
-
+        // $this->prd($data['products']);
         foreach($data['products'] as $index => $product) {
             // Handle size chart file if provided, or assign default image
             $sizeChartFileName = 'demo_img.jpg'; // Default image name
@@ -246,6 +248,15 @@ class Product_Controller extends Api_Controller
                 'manufacturer_name' => $product['storeName']
             );
 
+            $product_item_parcel[] = array(
+                'uid' => $this->generate_uid(UID_PRODUCT_PARCEL),
+                'product_id' => $product_data[$index]['uid'],
+                'weight' => $product['weigth'],
+                'length' => $product['length'],
+                'breadth' => $product['breadth'],
+                'height' => $product['height']
+            );
+
             // Handle product images upload
             $ProductImagesModel = new ProductImagesModel();
             if (!empty($uploadedFiles['products'][$index]['image'])) {
@@ -266,6 +277,7 @@ class Product_Controller extends Api_Controller
         $ProductModel = new ProductModel();
         $ProductItemModel = new ProductItemModel();
         $ItemStocksModel = new ItemStocksModel();
+        $ProductParcelModel = new ProductParcelModel();
 
         // Transaction Start
         $ProductModel->transStart();
@@ -274,6 +286,7 @@ class Product_Controller extends Api_Controller
             $ProductModel->insertBatch($product_data);
             $ItemStocksModel->insertBatch($item_stock_data);
             $ProductItemModel->insertBatch($product_item_data);
+            $ProductParcelModel->insertBatch($product_item_parcel);
             $ProductModel->transCommit();
         } catch (\Exception $e) {
             // Rollback the transaction if an error occurs
@@ -593,6 +606,10 @@ class Product_Controller extends Api_Controller
             product_item.delivery_charge,
             product_item.manufacturer_brand AS manufacturer_brand,
             product_item.manufacturer_name AS manufacturer_name,
+            product_parcel.weight,
+            product_parcel.length,
+            product_parcel.breadth,
+            product_parcel.height,
             product_meta_detalis.uid AS meta_id,
             product_meta_detalis.meta_title,
             product_meta_detalis.meta_description,
@@ -615,7 +632,9 @@ class Product_Controller extends Api_Controller
         LEFT JOIN
             users ON vendor.user_id = users.uid
         LEFT JOIN
-            product_size_list ON product.size_id = product_size_list.uid";
+            product_size_list ON product.size_id = product_size_list.uid
+        LEFT JOIN
+            product_parcel ON product.uid = product_parcel.product_id";
 
         if (!empty($data['p_id'])) {
             $p_id = $data['p_id'];

@@ -298,18 +298,51 @@ class Order_Controller extends Main_Controller
             $PaymentsModel = new PaymentsModel();
             $ProductItemModel = new ProductItemModel();
             $AddressModel = new AddressModel();
+            $VendorModel = new VendorModel();
     
             // Check if address exists in user_data
             if (!empty($user_data['address']['id'])) {
                 date_default_timezone_set('Asia/Kolkata');
                 $user_address = $AddressModel->where('uid', $user_data['address']['uid'])->first();
                 if(!empty($user_address)){
-                    $shipping_auth = $this->shipping_login();
+
+                    $shipping_auth = $this->ensure_valid_token();
+                    // $this->prd($shipping_auth);
+                    // $this->session->set('shipping_auth_token', $shipping_auth);
                     
                     if($shipping_auth['status']){
                         $shipping_avelablity = $this->check_serviceability($shipping_auth['api_token'], $user_address['zipcode']);
-                        $this->prd($shipping_avelablity);
-                        // Prepare order data
+                        // $this->prd($shipping_avelablity);
+                        if($shipping_avelablity['success']){
+                            $vendor_data = $VendorModel->where('uid', $user_cart['cart'][0]['product']['vendor_id'])->first();
+                            
+                            $OrderItemsIsSaved = true;
+                            $weight = 0;
+                            $length = 0;
+                            $breadth = 0;
+                            $height = 0;
+                            foreach ($user_cart['cart'] as $cart) {
+                                $weight += intval($cart['product']['weight']);
+                                $length += intval($cart['product']['length']);
+                                $breadth += intval($cart['product']['breadth']);
+                                $height += intval($cart['product']['height']);
+                            }
+                            $shipment_data = [
+                                "length" => $length,
+                                "breadth" => $breadth,
+                                "height" => $height,
+                                "weight" => $weight,
+                                "destination_pincode" => $user_address['zipcode'],
+                                "origin_pincode" => $vendor_data['pin'], 
+                                "destination_country_code" => "IN",
+                                "origin_country_code" => "IN",
+                                "shipment_mode" => "S",
+                                "shipment_type" => "P",
+                                "shipment_value" => $user_cart['total'] 
+                            ];
+                            $get_estimate = $this->get_estimate_single_shipment($shipping_auth['api_token'], $shipment_data);
+                            $this->prd($get_estimate);
+                        }
                         $orderData = [
                             "uid" => $this->generate_uid(UID_ORDERS),
                             "user_id" => $user_data['user']['uid'], // Make sure the user data exists
@@ -375,6 +408,25 @@ class Order_Controller extends Main_Controller
                                 $resp['status'] = true;
                                 $resp['message'] = 'Order Placed Successfully';
                                 $resp['data'] = ['order_id' => $orderData['uid']];
+                                // if ($deleted) {
+                                //     // $resp['status'] = true;
+                                //     // $resp['message'] = 'Order Placed Successfully';
+                                //     // $resp['data'] = ['order_id' => $orderData['uid']];
+                                //     $user_address = $AddressModel->where('uid', $user_data['address']['uid'])->first();
+                                //     if(!empty($user_address)){
+                                //         $shipping_auth = $this->shipping_login();
+                                //         if($shipping_auth['status']){
+                                //             $shipping_avelablity = $this->check_serviceability($shipping_auth['api_token'], $user_address['zipcode']);
+                                //             $this->prd($shipping_avelablity);
+            
+                                //         } else {
+                                //             $resp['message'] = 'Address Not Found';
+                                //         }
+                                        
+                                //     } else {
+                                //         $resp['message'] = 'Please Add A Billing Address';
+                                //     }
+                                // }
                             }
                         } else {
                             $resp['message'] = 'Failed to place the order.';
@@ -1378,7 +1430,7 @@ class Order_Controller extends Main_Controller
             } elseif (isset($responseData['success'])) {
                 $api_token = $responseData['api_token']; // Extract the token for future use
                 // echo "Login successful: API token generated.";
-                return ['status' => true, 'api_token' =>  $responseData['api_token'], 'msg' => 'successfull'];
+                return ['status' => true, 'api_token' =>  $responseData['api_token'], 'msg' => 'New token'];
                 // return $this->check_serviceability($api_token, $pincode = '712410');
                 // Store $api_token securely for subsequent API requests
             } else {
@@ -1391,6 +1443,59 @@ class Order_Controller extends Main_Controller
         // Close cURL session
         curl_close($ch);
     }
+
+    function ensure_valid_token() {
+        // $session = \Config\Services::session();
+        // $session->remove('shipping_auth_token');
+        $current_token = $this->session->get('shipping_auth_token');
+        if (empty($current_token)) {
+            $new_token = $this->shipping_login();
+            $shipping_auth = $this->shipping_login();
+            $this->session->set('shipping_auth_token', $new_token['api_token']);
+            return $new_token;
+        }
+        return ['status' => true, 'api_token' =>  $current_token, 'msg' => 'Old token'];;
+    }
+
+    function get_estimate_single_shipment($api_token, $shipment_data)
+    {
+        // $this->pr($api_token);
+        // $this->prd($shipment_data);
+        // Define the API endpoint
+        $url = "https://www.icarry.in/api_get_estimate&api_token=" . $api_token;
+
+        // Initialize cURL
+        $ch = curl_init();
+
+        // Set cURL options
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+        ]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($shipment_data));
+
+        // Execute the API call
+        $response = curl_exec($ch);
+
+        // Check for cURL errors
+        if (curl_errno($ch)) {
+            echo "cURL Error: " . curl_error($ch);
+            curl_close($ch);
+            return null;
+        }
+
+        // Close cURL session
+        curl_close($ch);
+
+        // Decode the JSON response
+        $responseData = json_decode($response, true);
+
+        // Return the response data
+        return $responseData;
+    }
+
 
     
 

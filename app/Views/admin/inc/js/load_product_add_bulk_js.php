@@ -356,6 +356,10 @@
 
         </td>
         <td><input type="file" id="size_chart" name="size_chart"></td>
+        <td><input type="text" placeholder="Enter Weight"></td>
+        <td><input type="text" placeholder="Enter Length"></td>
+        <td><input type="text" placeholder="Enter Breadth"></td>
+        <td><input type="text" placeholder="Enter Height"></td>
 
         <td>
             <button class="btn btn-md btn-danger" type="button" onclick="removeRow(this)">
@@ -480,6 +484,15 @@
             const discount = row.cells[7].children[0].value;
             const del_charge = row.cells[8].children[0].value;
             const price = row.cells[9].children[0].value;
+
+            const weigth = row.cells[13].children[0].value;
+            const length = row.cells[14].children[0].value;
+            const breadth = row.cells[15].children[0].value;
+            const height = row.cells[16].children[0].value;
+            console.log('weigth', weigth)
+            console.log('length', length)
+            console.log('breadth', breadth)
+            console.log('height', height)
             const description = row.cells[10].querySelector('span') ? row.cells[10].querySelector('span').innerHTML : '';
             const imagesFiles = rowImages[row.rowIndex] || [];
             let isValid = true;
@@ -489,6 +502,34 @@
             if (!productName) {
                 html = `<div class="alert alert-warning alert-dismissible alert-label-icon label-arrow fade show material-shadow" role="alert">
                             <i class="ri-alert-line label-icon"></i><strong>Warning</strong> - Product Name is required.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+                isValid = false;
+            }
+            if (!weigth) {
+                html = `<div class="alert alert-warning alert-dismissible alert-label-icon label-arrow fade show material-shadow" role="alert">
+                            <i class="ri-alert-line label-icon"></i><strong>Warning</strong> - Product Weight is required.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+                isValid = false;
+            }
+            if (!length) {
+                html = `<div class="alert alert-warning alert-dismissible alert-label-icon label-arrow fade show material-shadow" role="alert">
+                            <i class="ri-alert-line label-icon"></i><strong>Warning</strong> - Product Length is required.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+                isValid = false;
+            }
+            if (!breadth) {
+                html = `<div class="alert alert-warning alert-dismissible alert-label-icon label-arrow fade show material-shadow" role="alert">
+                            <i class="ri-alert-line label-icon"></i><strong>Warning</strong> - Product Breadth is required.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+                isValid = false;
+            }
+            if (!height) {
+                html = `<div class="alert alert-warning alert-dismissible alert-label-icon label-arrow fade show material-shadow" role="alert">
+                            <i class="ri-alert-line label-icon"></i><strong>Warning</strong> - Product Height is required.
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>`;
                 isValid = false;
@@ -533,7 +574,11 @@
                 tags,
                 description,
                 price,
-                images: imagesFiles // Add the images linked to this row
+                images: imagesFiles, // Add the images linked to this row
+                weigth,
+                length,
+                breadth,
+                height
             });
         });
 
@@ -555,6 +600,7 @@
             formData.append('user_type', user_type);
             formData.append('status', 'active');
 
+            console.log('pro_array', products)
             // Append product data to FormData
             products.forEach((product, index) => {
                 formData.append(`products[${index}][productName]`, product.productName);
@@ -568,6 +614,11 @@
                 formData.append(`products[${index}][size]`, product.size);
                 formData.append(`products[${index}][tags]`, product.tags);
                 formData.append(`products[${index}][price]`, product.price);
+
+                formData.append(`products[${index}][weigth]`, product.weigth);
+                formData.append(`products[${index}][length]`, product.length);
+                formData.append(`products[${index}][breadth]`, product.breadth);
+                formData.append(`products[${index}][height]`, product.height);
 
                 // Append images for the product
                 product.images.forEach((imageFile, imgIndex) => {

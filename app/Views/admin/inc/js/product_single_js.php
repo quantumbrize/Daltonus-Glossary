@@ -183,6 +183,22 @@
                                         <td style="text-align: right" class="text-secondary">${product.category}</td>
                                     </tr>
                                     <tr>
+                                        <td>Wight</td>
+                                        <td style="text-align: right" class="text-secondary">${product.weight}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Length</td>
+                                        <td style="text-align: right" class="text-secondary">${product.length}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Breadth</td>
+                                        <td style="text-align: right" class="text-secondary">${product.breadth}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Height</td>
+                                        <td style="text-align: right" class="text-secondary">${product.height}</td>
+                                    </tr>
+                                    <tr>
                                         <td style="font-weight:bold;">Size</td>
                                         <td style="text-align: right; font-weight:bold;">Stock</td>
                                     </tr>

@@ -92,6 +92,10 @@
                     <th class="details-column">Details</th>
                     <th class="images-column">Images</th>
                     <th class="size-chart-column">Size Chart</th>
+                    <th class="size-chart-column">Weight (in Gram)</th>
+                    <th class="size-chart-column">Length (in Centemeter)</th>
+                    <th class="size-chart-column">Breadth (in Centemeter)</th>
+                    <th class="size-chart-column">Height (in Centemeter)</th>
                     <th class="delete-column">Delete</th>
                 </tr>
                 </thead>
@@ -154,7 +158,10 @@
 
                         </td>
                         <td><input type="file" id="size_chart" name="size_chart"></td>
-
+                        <td><input type="text" placeholder="Enter Weight"></td>
+                        <td><input type="text" placeholder="Enter Length"></td>
+                        <td><input type="text" placeholder="Enter Breadth"></td>
+                        <td><input type="text" placeholder="Enter Height"></td>
                         <td>
                             <button class="btn btn-md btn-danger" type="button" onclick="removeRow(this)">
                                 <i class="ri-delete-bin-7-line"></i>

@@ -195,6 +195,7 @@ defined('UID_ACCESS')               || define('UID_ACCESS',         'ACC');
 defined('UID_STAFF')                || define('UID_STAFF',          'STF');
 defined('UID_STAFF_ACCESS')         || define('UID_STAFF_ACCESS',   'STFA');
 defined('UID_VENDOR')               || define('UID_VENDOR',         'VEN');
+defined('UID_PRODUCT_PARCEL')       || define('UID_PRODUCT_PARCEL', 'PROPER');
 
 
 
